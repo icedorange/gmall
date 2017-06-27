@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayuan.dao.OrderMapper">
+
+	<select
+		id="selectOrder"
+		resultType="Order">
+		select
+		id,
+		sum,
+		payment_time,
+		transaction_status
+		from g_order
+		<where>
+			<if test="uid !=null ">
+				AND uid = #{uid}
+			</if>
+			<if test="transactionStatus !=null ">
+				AND transaction_status = #{transactionStatus}
+			</if>
+		</where>
+	</select>
+	
+	<select
+		id="selectOrderById"
+		resultType="Order">
+		select
+		id,
+		sum,
+		payment_time,
+		transaction_status,
+		consignee_address,
+		consigee_number,
+		consigee_number
+		from g_order where id = #{id}	
+	</select>
+	
+	<insert id="insertOrder" keyProperty="id" useGeneratedKeys="true">
+		insert into g_order (sum,orders_time,consignee_address,consignee_name,consigee_number,uid)
+		values (#{sum},#{ordersTime},#{consigneeAddress},#{consigneeName},#{consigeeNumber},#{uid})
+	</insert>
+</mapper>

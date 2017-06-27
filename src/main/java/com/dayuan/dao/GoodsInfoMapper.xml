@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayuan.dao.GoodsInfoMapper">
+
+	<!-- 查询/分类/模糊-->
+	<select id="selectGoods" resultType="GoodsInfo">
+		select
+		id,				<!-- 主键 -->
+		product,		
+		promotion_price,
+		picture
+		from g_goods_info
+		<where>
+			<if test="product !=null ">
+				AND product LIKE concat('%',#{product},'%')
+			</if>
+			<if test="cid != null">
+				AND cid = #{cid}
+			</if>
+			<if test="bid != null">
+				AND bid = #{bid}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectGoodsDetails" resultType="GoodsInfo">
+		select
+		id,				<!-- 主键 -->
+		product,		
+		promotion_price,
+		original_price,
+		picture,
+		cid,
+		bid
+		from g_goods_info where id = #{id}
+	</select>
+</mapper>

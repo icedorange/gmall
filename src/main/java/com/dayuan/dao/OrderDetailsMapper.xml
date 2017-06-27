@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayuan.dao.OrderDetailsMapper">
+	<select
+		id="selectOrderDetails"
+		resultType="OrderDetails">
+		select
+		id,
+		oid,
+		gid,
+		price,
+		number
+		from g_order_details where oid=#{oid}
+	</select>
+	
+	<insert id="insertOrderDetails" useGeneratedKeys="true" keyProperty="id">
+		insert into g_order_details (oid,gid,price,number)
+		values (#{oid},#{gid},#{price},#{number})
+	</insert>
+</mapper>
