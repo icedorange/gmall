@@ -25,9 +25,10 @@ public class CategoryController {
 
 	@Resource
 	private CategoryService categoryService;
-	
+
 	/**
 	 * 展示类目
+	 * 
 	 * @param session
 	 * @param response
 	 * @return
@@ -40,13 +41,13 @@ public class CategoryController {
 		try {
 			resultVo = new ResultVo();
 			List<CategoryVo> categoryVoList = categoryService.selectCategoryVo(0);
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setData(categoryVoList);
 			return resultVo;
-		} catch (Exception e) {			
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("用户注册失败：" + e.getMessage());
+		} catch (Exception e) {
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}

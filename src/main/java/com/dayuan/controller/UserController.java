@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dayuan.bean.User;
 import com.dayuan.constant.ConstantCode;
+import com.dayuan.exception.ParamException;
 import com.dayuan.service.UserService;
 import com.dayuan.utils.CreateCode;
-import com.dayuan.utils.ParamException;
 import com.dayuan.utils.PatternUtils;
 import com.dayuan.vo.ResultVo;
 
@@ -41,17 +41,13 @@ public class UserController {
 		ResultVo resultVo = null;
 		try {
 			resultVo = new ResultVo();
-			User user = (User) session.getAttribute("user");
-			if (user == null) {
 
-			} else {
-				session.removeAttribute("user");
-			}
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			session.removeAttribute("user");
+
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			return resultVo;
 		} catch (Exception e) {
-			resultVo = new ResultVo();
-			resultVo.setCode(ConstantCode.FAIL.getValue());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
 			resultVo.setMsg("网络不稳定，请稍后再试");
 			logger.error("用户注册失败：" + e.getMessage());
 			return resultVo;
@@ -78,10 +74,10 @@ public class UserController {
 			} else {
 				resultVo.setData(loginUser);
 			}
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			return resultVo;
 		} catch (Exception e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
 			resultVo.setMsg("网络不稳定，请稍后再试");
 			logger.error("用户注册失败：" + e.getMessage());
 			return resultVo;
@@ -106,11 +102,11 @@ public class UserController {
 		try {
 			resultVo = new ResultVo();
 			if (loginName == null || password == null || "".equals(loginName) || "".equals(password)) {
-				throw new ParamException("参数错误");
+				throw new ParamException(ConstantCode.PARAM_EMPTY);
 			}
 			// 判断密码长度
 			if (!PatternUtils.isPassword(password)) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("密码长度6-20位");
 				return resultVo;
 			}
@@ -127,24 +123,25 @@ public class UserController {
 			// 数据库查询
 			User loginUser = userService.selectUserByParam(user);
 			if (loginUser == null) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("请注册后登录");
 				return resultVo;
 			}
 			// 登录成功，对象放入session
 			session.setAttribute("user", loginUser);
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setData(loginUser);
 			resultVo.setMsg("登录成功");
 			return resultVo;
-		} catch (ParamException e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg(e.getMessage());
+		} catch (ParamException pe) {
+			resultVo.setCode(ConstantCode.PARAM_EMPTY.getCode());
+			resultVo.setMsg(ConstantCode.PARAM_EMPTY.getMsg());
+			logger.error(ConstantCode.PARAM_EMPTY.printMsg() + "," + pe.getMessage());
 			return resultVo;
 		} catch (Exception e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("用户登陆失败：" + e.getMessage());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 
@@ -169,37 +166,37 @@ public class UserController {
 			resultVo = new ResultVo();
 			// 验证邮箱账号格式
 			if (!PatternUtils.isEmail(user.getEmail())) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("请输入有效邮箱账号");
 				return resultVo;
 			}
 			// 判断密码长度
 			if (!PatternUtils.isPassword(user.getPassword()) || !PatternUtils.isPassword(passwordRepeat)) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("密码长度6-20位");
 				return resultVo;
 			}
 			// 判断密码是否相等
 			if (!user.getPassword().equals(passwordRepeat)) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("两次密码不相同，请重新输入");
 				return resultVo;
 			}
 			// 查询数据库中是否存在
 			if (userService.selectUserByParam(user) != null) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("此账号已被注册");
 				return resultVo;
 			}
 			// 通过邮箱注册，数据库添加用户数据
 			userService.addUserByEmail(user);
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setMsg("注册成功");
 			return resultVo;
 		} catch (Exception e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("用户注册失败：" + e.getMessage());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}
@@ -224,24 +221,26 @@ public class UserController {
 			resultVo = new ResultVo();
 			// 验证码是否存在
 			if (code == null || "".equals(code)) {
-				throw new ParamException("参数错误");
+				resultVo.setCode(ConstantCode.FAIL.getCode());
+				resultVo.setMsg("请重新输入验证码");
+				return resultVo;
 			}
 			// 验证手机号格式
 			if (!PatternUtils.isMobile(user.getMobile())) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("请输入有效手机号码");
 				return resultVo;
 			}
 			// 判断密码长度
 			if (!PatternUtils.isPassword(user.getPassword()) || !PatternUtils.isPassword(passwordRepeat)) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("密码长度6-20位");
 				return resultVo;
 			}
 			// 判断密码是否相等
 			if (!user.getPassword().equals(passwordRepeat)) {
 				resultVo = new ResultVo();
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("两次密码不相同，请重新输入");
 				return resultVo;
 			}
@@ -250,14 +249,13 @@ public class UserController {
 			@SuppressWarnings("rawtypes")
 			Map codeMap = (Map) session.getAttribute("code");
 			if (!codeMap.get("mobile").equals(user.getMobile())) {
-				resultVo = new ResultVo();
-				resultVo.setCode(ConstantCode.CODE_ERROR.getValue());
+				resultVo.setCode(ConstantCode.CODE_ERROR.getCode());
 				resultVo.setMsg("验证码错误,请重新获取");
 				return resultVo;
 			}
 			long mistiming = System.currentTimeMillis() - (long) codeMap.get("codeTime");
 			if ((mistiming / 1000) > 120) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("验证码超时,请重新获取");
 				session.removeAttribute("code");
 				return resultVo;
@@ -265,25 +263,19 @@ public class UserController {
 
 			// 查询数据库中是否存在
 			if (userService.selectUserByParam(user) != null) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("此手机号已被注册");
 				return resultVo;
 			}
 			// 通过手机号注册，数据库添加用户数据
 			userService.addUserByMobile(user);
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setMsg("注册成功");
 			return resultVo;
-		} catch (ParamException e) {
-			resultVo = new ResultVo();
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg(e.getMessage());
-			return resultVo;
 		} catch (Exception e) {
-			resultVo = new ResultVo();
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("用户注册失败：" + e.getMessage());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}
@@ -307,7 +299,7 @@ public class UserController {
 			resultVo = new ResultVo();
 			// 验证手机号格式
 			if (!PatternUtils.isMobile(mobile)) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
+				resultVo.setCode(ConstantCode.FAIL.getCode());
 				resultVo.setMsg("请输入有效号码");
 				return resultVo;
 			}
@@ -319,13 +311,13 @@ public class UserController {
 			codeMap.put("codeTime", codeTime);
 			codeMap.put("mobile", mobile);
 			session.setAttribute("code", codeMap);
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setMsg("短信发送成功");
 			return resultVo;
 		} catch (Exception e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("用户注册失败：" + e.getMessage());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}

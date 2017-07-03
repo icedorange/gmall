@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayuan.dao.UserCartMapper">
+
+	<insert
+		id="insertUserCart"
+		useGeneratedKeys="true"
+		keyProperty="id">
+		insert into g_user_cart (uid)
+		values (#{uid})
+	</insert>
+
+	<select
+		id="selectUserCart"
+		resultType="UserCart">
+		select
+		id,
+		uid
+		from g_user_cart where uid = #{uid}
+	</select>
+	
+</mapper>

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dayuan.bean.GoodsInfo;
 import com.dayuan.constant.ConstantCode;
+import com.dayuan.exception.ParamException;
 import com.dayuan.service.GoodsListService;
-import com.dayuan.utils.ParamException;
 import com.dayuan.vo.ResultVo;
 
 @Controller
@@ -42,14 +42,13 @@ public class GoodsListController {
 			goodsInfo.setCid(Long.parseLong("3"));
 			//查询出商品表
 			List<GoodsInfo> goods = goodsListService.selectGoods(goodsInfo);		
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setData(goods);
 			return resultVo;
 		} catch (Exception e) {
-			e.printStackTrace();
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("用户注册失败：" + e.getMessage());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}
@@ -69,21 +68,22 @@ public class GoodsListController {
 			resultVo = new ResultVo();
 			if (id == null || "".equals(id)) {
 				//修改使用自定义异常
-				throw new ParamException("参数错误");
+				throw new ParamException(ConstantCode.PARAM_EMPTY);
 			}
 			//查询出商品详情
 			GoodsInfo goods = goodsListService.selectGoodsDetails(id);
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setData(goods);
 			return resultVo;
-		} catch (ParamException e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg(e.getMessage());
+		} catch (ParamException pe) {
+			resultVo.setCode(ConstantCode.PARAM_EMPTY.getCode());
+			resultVo.setMsg(ConstantCode.PARAM_EMPTY.getMsg());
+			logger.error(ConstantCode.PARAM_EMPTY.printMsg() + "," + pe.getMessage());
 			return resultVo;
-		}catch (Exception e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("用户注册失败：" + e.getMessage());
+		} catch (Exception e) {
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}

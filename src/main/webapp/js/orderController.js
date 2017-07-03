@@ -1,32 +1,5 @@
-$(document).ready(function(){
-	
-	//登录状态	
-	$.ajax({
-		type : "POST",
-		url : "http://localhost:80/gmall/user/loginStatus.shtml",
-		dataType : "json",
-		success : function(obj) {
-			if (obj.code == 1) {
-				if (obj.data == null) {
-					window.location.href = "http://localhost:80/gmall/home/login.html";
-					return;
-				}
-				if(obj.data.username !=null){
-					$(".menu-hd:first").html("你好! " + obj.data.username +" " + "<a href=\"login.html\" onclick=\"logout();\">退出</a>");
-				}else if(obj.data.mobile !=null){
-					$(".menu-hd:first").html("你好! " + obj.data.mobile +" " + "<a href=\"login.html\" onclick=\"logout();\">退出</a>");
-				}else if(!obj.data.email!=null){
-					$(".menu-hd:first").html("你好! " + obj.data.email +" " + "<a href=\"login.html\" onclick=\"logout();\">退出</a>");
-				}
-			} else {
-				alert(obj.msg);
-			}					
-		}
-	});
+$(document).ready(function(){	
 	//所有订单
-	
-	
-	
 	$.ajax({
 		type : "POST",
 		url : "http://localhost:80/gmall/order/orderItem.shtml",
@@ -86,9 +59,7 @@ $(document).ready(function(){
 									"<td class=\"td-inner\">"+object.id +"</td>"+
 								"</div>"+
 								"</div>");*/
-
 					});
-					
 				}							
 			} else {
 				alert(obj.msg);
@@ -96,20 +67,3 @@ $(document).ready(function(){
 		}
 	});	
 });
-
-//登出
-function logout() {
-	$.ajax({
-		type : "POST",
-		url : "http://localhost:80/gmall/user/logout.shtml",
-		dataType : "json",
-		success : function(obj) {
-			if (obj.code == 1) {
-				window.location.href = "http://localhost:80/gmall/home/login.html";
-			} else {
-			
-			}
-		}
-	});
-}
-

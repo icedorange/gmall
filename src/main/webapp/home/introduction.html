@@ -15,42 +15,15 @@
 
 		<script src="../AmazeUI-2.4.2/assets/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../basic/js/quick_links.js"></script>
-
 		<script type="text/javascript" src="../AmazeUI-2.4.2/assets/js/amazeui.js"></script>
 		<script type="text/javascript" src="../js/jquery.imagezoom.min.js"></script>
 		<script type="text/javascript" src="../js/jquery.flexslider.js"></script>
 		<script type="text/javascript" src="../js/list.js"></script>
 		<script type="text/javascript" src="../js/city.js"></script>
-		<script type="text/javascript" src="../js/introductionController.js"></script>
 		<script type="text/javascript" src="../js/common.js"></script>
-		<script type="text/javascript">
-		$(document).ready(function(){
-			//商品详情
-			$.ajax({
-				type : "POST",
-				url : "http://localhost:80/gmall/goods/goodsDetails.shtml",
-				data : {id : document.URL.getQuery("id")},
-				async : false,
-				dataType: "json",
-				success : function(obj) {
-						if(obj.code==1){
-							if (obj.data != null) {
-								var goods = obj.data;
-								var picture = "http://localhost:80/gmall/" + goods.picture;
-								$(".tb-s310 img").attr({"src":picture,"rel":picture});
-								$(".tb-s310 a").attr({"href":picture});
-								$(".tb-detail-hd h1").text(goods.product);
-								$(".sys_item_price").text(goods.promotionPrice/100);
-								$(".sys_item_mktprice").text(goods.originalPrice/100);
-							}
-						} else {
-							alert(obj.msg);
-						}
-					}
-				}
-			);
-		});
-		</script>
+		<script type="text/javascript" src="../js/loginStatusController.js"></script>
+		<script type="text/javascript" src="../js/introductionController.js"></script>
+		<script type="text/javascript" src="../js/addCartController.js"></script>
 	</head>
 
 	<body>
@@ -355,7 +328,7 @@
 							</li>
 							<li>
 								<div class="clearfix tb-btn tb-btn-basket theme-login">
-									<a id="LikBasket" title="加入购物车" href="#"><i></i>加入购物车</a>
+									<a id="LikBasket" title="加入购物车" onclick="addCart();" ><i></i>加入购物车</a>
 								</div>
 							</li>
 						</div>

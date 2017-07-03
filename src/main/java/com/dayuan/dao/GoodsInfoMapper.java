@@ -12,5 +12,5 @@ public interface GoodsInfoMapper {
 	/* @Param("product")String product */
 	List<GoodsInfo> selectGoods(GoodsInfo goodsInfo);
 
-	GoodsInfo selectGoodsDetails(@Param("id") Long id);
+	GoodsInfo selectGoodsInfo(@Param("id") Long id);
 }

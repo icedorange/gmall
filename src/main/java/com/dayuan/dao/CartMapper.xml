@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayuan.dao.CartMapper">
+
+	<select
+		id="selectCartGoods"
+		resultType="Cart">
+		select
+		number,
+		gid
+		from g_cart 
+		<where>
+			<if test="gid !=null ">
+				AND gid = #{gid}
+			</if>
+			<if test="ucid !=null ">
+				AND ucid = #{ucid}
+			</if>
+			<if test="isSelected !=null ">
+				AND is_selected = #{isSelected}
+			</if>
+		</where>
+	</select>
+	
+	<select
+		id="selectCart"
+		resultType="Cart">
+		select
+		number,
+		gid
+		from g_cart where ucid = #{ucid}
+	</select>
+
+	<update id="updateCart">
+		update g_cart
+		<trim prefix="set" suffixOverrides=",">
+		 <if test="number!=null">number=#{number},</if>
+		 <if test="isSelected!=null">is_selected=#{isSelected},</if>
+		</trim>
+		where gid = #{gid}
+		and ucid = #{ucid}
+	</update>
+
+	<insert
+		id="insertCart"
+		useGeneratedKeys="true"
+		keyProperty="id">
+		insert into g_cart (gid,number,ucid)
+		values
+		(#{gid},#{number},#{ucid})
+	</insert>
+
+	<delete id="deleteCart">
+		delete from g_cart where gid = #{gid} and ucid = #{ucid}
+	</delete>
+</mapper>

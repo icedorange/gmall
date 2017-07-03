@@ -25,5 +25,28 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
+	//商品详情
+	$.ajax({
+		type : "POST",
+		url : $.gmallHost+"/goods/goodsDetails.shtml",
+		data : {id : document.URL.getQuery("id")},
+		async : false,
+		dataType: "json",
+		success : function(obj) {
+				if(obj.code==1){
+					if (obj.data != null) {
+						var goods = obj.data;
+						var picture = "http://localhost:80/gmall/" + goods.picture;
+						$(".tb-s310 img").attr({"src":picture,"rel":picture});
+						$(".tb-s310 a").attr({"href":picture});
+						$(".tb-detail-hd h1").text(goods.product);
+						$(".sys_item_price").text(goods.promotionPrice/100);
+						$(".sys_item_mktprice").text(goods.originalPrice/100);
+					}
+				} else {
+					alert(obj.msg);
+				}
+			}
+		}
+	);
 });

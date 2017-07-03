@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dayuan.bean.Order;
 import com.dayuan.bean.User;
 import com.dayuan.constant.ConstantCode;
+import com.dayuan.exception.ParamException;
+import com.dayuan.exception.StockExctption;
 import com.dayuan.service.OrderService;
-import com.dayuan.utils.ParamException;
 import com.dayuan.vo.ResultVo;
 
 @Controller
@@ -45,28 +46,23 @@ public class OrderController {
 			resultVo = new ResultVo();
 			// transactionStatus=2000查询所有订单
 			if (transactionStatus == null) {
-				throw new ParamException("参数错误");
+				throw new ParamException(ConstantCode.PARAM_EMPTY);
 			}
 			// 从session中获取用户，
 			User user = (User) session.getAttribute("user");
-			if (user == null) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
-				resultVo.setMsg("请重新登录");
-				return resultVo;
-			}
 			List<Order> order = orderService.selectOrder(transactionStatus, user.getId());
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setData(order);
 			return resultVo;
-		} catch (ParamException e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg(e.getMessage());
+		} catch (ParamException pe) {
+			resultVo.setCode(ConstantCode.PARAM_EMPTY.getCode());
+			resultVo.setMsg(ConstantCode.PARAM_EMPTY.getMsg());
+			logger.error(ConstantCode.PARAM_EMPTY.printMsg() + "," + pe.getMessage());
 			return resultVo;
 		} catch (Exception e) {
-			e.printStackTrace();
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("订单列表查询：" + e.getMessage());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}
@@ -81,33 +77,25 @@ public class OrderController {
 			resultVo = new ResultVo();
 			// transactionStatus=2000查询所有订单
 			if (id == null) {
-				throw new ParamException("参数错误");
-			}
-			// 从session中获取用户，
-
-			User user = (User) session.getAttribute("user");
-			if (user == null) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
-				resultVo.setMsg("请重新登录");
-				return resultVo;
+				throw new ParamException(ConstantCode.PARAM_EMPTY);
 			}
 
 			Order order = orderService.selectOrderById(id);
 
 			order.setOrderDetails(orderService.selectOrderDetails(id));
 
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
 			resultVo.setData(order);
 			return resultVo;
-		} catch (ParamException e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg(e.getMessage());
+		} catch (ParamException pe) {
+			resultVo.setCode(ConstantCode.PARAM_EMPTY.getCode());
+			resultVo.setMsg(ConstantCode.PARAM_EMPTY.getMsg());
+			logger.error(ConstantCode.PARAM_EMPTY.printMsg() + "," + pe.getMessage());
 			return resultVo;
 		} catch (Exception e) {
-			e.printStackTrace();
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("订单列表查询：" + e.getMessage());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}
@@ -121,31 +109,32 @@ public class OrderController {
 		ResultVo resultVo = null;
 		try {
 			resultVo = new ResultVo();
+			//收货人地址详情，商品详情，
 			// 判断参数
 			if (id == null || number == null || order == null) {
-				throw new ParamException("参数错误");
+				throw new ParamException(ConstantCode.PARAM_EMPTY);
 			}
 			// 从session中获取用户，
 			User user = (User) session.getAttribute("user");
-			if (user == null) {
-				resultVo.setCode(ConstantCode.FAIL.getValue());
-				resultVo.setMsg("请重新登录");
-				return resultVo;
-			}
 			// 返回订单号
-			Long orderid = orderService.orderConfirm(id, number, order, user.getId());
-			resultVo.setCode(ConstantCode.SUCCESS.getValue());
-			resultVo.setData(orderid);
+			orderService.orderConfirm(id, number, order, user.getId());
+			resultVo.setCode(ConstantCode.SUCCESS.getCode());
+			resultVo.setData(order);
 			return resultVo;
-		} catch (ParamException e) {
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg(e.getMessage());
+		} catch (ParamException pe) {
+			resultVo.setCode(ConstantCode.PARAM_EMPTY.getCode());
+			resultVo.setMsg(ConstantCode.PARAM_EMPTY.getMsg());
+			logger.error(ConstantCode.PARAM_EMPTY.printMsg() + "," + pe.getMessage());
+			return resultVo;
+		} catch (StockExctption se) {
+			resultVo.setCode(se.getConstantCode().getCode());
+			resultVo.setMsg(se.getConstantCode().getMsg());
+			logger.error(se.getConstantCode().printMsg());
 			return resultVo;
 		} catch (Exception e) {
-			e.printStackTrace();
-			resultVo.setCode(ConstantCode.FAIL.getValue());
-			resultVo.setMsg("网络不稳定，请稍后再试");
-			logger.error("订单计算：" + e.getMessage());
+			resultVo.setCode(ConstantCode.FAIL.getCode());
+			resultVo.setMsg(ConstantCode.FAIL.getMsg());
+			logger.error(ConstantCode.FAIL.printMsg() + "," + e.getMessage());
 			return resultVo;
 		}
 	}

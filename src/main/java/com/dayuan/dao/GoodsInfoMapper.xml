@@ -25,7 +25,7 @@
 		</where>
 	</select>
 	
-	<select id="selectGoodsDetails" resultType="GoodsInfo">
+	<select id="selectGoodsInfo" resultType="GoodsInfo">
 		select
 		id,				<!-- 主键 -->
 		product,		
@@ -36,4 +36,5 @@
 		bid
 		from g_goods_info where id = #{id}
 	</select>
+	
 </mapper>

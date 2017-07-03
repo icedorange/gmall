@@ -6,7 +6,7 @@
 
 	<select
 		id="selectCategoryByPid"
-		resultType="Category">
+		resultType="Brand">
 		select
 		name,			<!-- 品牌名 -->
 		from g_brand where id = #{id}

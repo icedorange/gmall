@@ -20,5 +20,4 @@ public enum PaymentStatusCode {
 	public int getValue() {
 		return value;
 	}
-
 }

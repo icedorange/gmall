@@ -20,6 +20,6 @@ public class GoodsListService {
 	}
 
 	public GoodsInfo selectGoodsDetails(Long id) {
-		return goodsInfoMapper.selectGoodsDetails(id);
+		return goodsInfoMapper.selectGoodsInfo(id);
 	}
 }

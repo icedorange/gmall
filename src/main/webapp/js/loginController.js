@@ -3,7 +3,7 @@ function login() {
 	var password = $('#password').val();
 	$.ajax({
 		type : "POST",
-		url : "http://localhost:80/gmall/user/login.shtml",
+		url :$.gmallHost+"/user/login.shtml",
 		data : {
 			"loginName" : loginName,
 			"password" : password,
@@ -11,7 +11,7 @@ function login() {
 		dataType : "json",
 		success : function(data) {
 			if (data.code == 1) {
-				window.location.href = "home.html";
+				window.location.href = $.gmallHost+"/home/home.html";
 			} else {
 				alert(data.msg);
 			}
