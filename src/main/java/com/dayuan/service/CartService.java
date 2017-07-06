@@ -41,28 +41,34 @@ public class CartService {
 	// 查询购物车
 	public ShopCartVo selectCart(Long uid,Integer isSelected) {
 		ShopCartVo shopCartVo = new ShopCartVo();
-		List<CartGoodsVo> cartGoodsVoList = new ArrayList<>();
-		// 查询g_user_cart表返回id
-		UserCart userCart = userCartMapper.selectUserCart(uid);
-		// 查询购物车表返回商品id，数量
-		List<Cart> cart = cartMapper.selectCart(userCart.getId(),isSelected);
-		Map<String, Object> params = new HashMap<>();
-		for (Cart cartGoods : cart) {
-			// 根据商品id查询商品信息
-			GoodsInfo goodsInfo = goodsInfoMapper.selectGoodsInfo(cartGoods.getGid());
-			// 计算每种商品（同规格）总价
-			int sum = cartGoods.getNumber() * goodsInfo.getPromotionPrice();
-			// 查询库存
-			params.put("gid", goodsInfo.getId());
-			Stock stock = stockMapper.selectStock(params);
-			CartGoodsVo cartGoodsVo = new CartGoodsVo(cartGoods.getGid(), goodsInfo.getProduct(),
-					goodsInfo.getPromotionPrice(), goodsInfo.getOriginalPrice(), goodsInfo.getPicture(),
-					cartGoods.getNumber(), stock.getNumber(), sum);
-			cartGoodsVoList.add(cartGoodsVo);
+		try {
+			
+			List<CartGoodsVo> cartGoodsVoList = new ArrayList<>();
+			// 查询g_user_cart表返回id
+			UserCart userCart = userCartMapper.selectUserCart(uid);
+			// 查询购物车表返回商品id，数量
+			List<Cart> cart = cartMapper.selectCart(userCart.getId(),isSelected);
+			Map<String, Object> params = new HashMap<>();
+			for (Cart cartGoods : cart) {
+				// 根据商品id查询商品信息
+				GoodsInfo goodsInfo = goodsInfoMapper.selectGoodsInfo(cartGoods.getGid());
+				// 计算每种商品（同规格）总价
+				int sum = cartGoods.getNumber() * goodsInfo.getPromotionPrice();
+				// 查询库存
+				params.put("gid", goodsInfo.getId());
+				Stock stock = stockMapper.selectStock(params);
+				CartGoodsVo cartGoodsVo = new CartGoodsVo(cartGoods.getGid(), goodsInfo.getProduct(),
+						goodsInfo.getPromotionPrice(), goodsInfo.getOriginalPrice(), goodsInfo.getPicture(),
+						cartGoods.getNumber(), stock.getNumber(), sum);
+				cartGoodsVoList.add(cartGoodsVo);
+			}
+			shopCartVo.setCartGoodsVo(cartGoodsVoList);
+			shopCartVo.setId(userCart.getId());
+			shopCartVo.setUid(userCart.getUid());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		shopCartVo.setCartGoodsVo(cartGoodsVoList);
-		shopCartVo.setId(userCart.getId());
-		shopCartVo.setUid(userCart.getUid());
+		
 		return shopCartVo;
 	}
 

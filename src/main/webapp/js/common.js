@@ -13,7 +13,7 @@ String.prototype.getQuery = function(name)
 }
 // 定义全局变量
 $.extend({
-	gmallHost:"http://localhost:80/gmall"
+	gmallHost:"http://www.gmall.com/gmall"
 });
 
 // 全局的ajax访问，处理ajax清求时sesion超时
@@ -24,7 +24,7 @@ $.ajaxSetup({
         var sessionstatus = xhr.getResponseHeader("sessionstatus"); 
         if (sessionstatus == "0") {
             // 如果超时就处理 ，指定要跳转的页面
-            window.location.replace("http://localhost:80/gmall/home/login.html");
+            window.location.replace("http://www.gmall.com/gmall/home/login.html");
         }
     }
 });

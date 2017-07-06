@@ -4,9 +4,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 		<title>购物车页面</title>
-
 		<link href="../AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css" />
 		<link href="../basic/css/demo.css" rel="stylesheet" type="text/css" />
 		<link href="../css/cartstyle.css" rel="stylesheet" type="text/css" />
@@ -25,7 +23,6 @@
 		</style>
 		<script type="text/javascript">
 		 $(document).ready(function(){
-
 		     $(function(){
 		         $(".add").click(function(){
 		          var t=$(this).parent().find('input[class*=text_box]');
@@ -96,7 +93,6 @@
 						<div class="wp">
 							<div class="th th-chk">
 								<div id="J_SelectAll1" class="select-all J_SelectAll">
-
 								</div>
 							</div>
 							<div class="th th-item">
@@ -122,7 +118,7 @@
 						<div class="bundle  bundle-last" id="cartTable">
 							<div class="clear"></div>
 							<div class="bundle-main">				
-								<ul class="item-content clearfix" v-for="todo in todos" v-cloak>
+								<ul v-bind:goodsID="todo.id" class="item-content clearfix" v-for="todo in todos" v-cloak>
 									<li class="td td-chk">
 										<div class="cart-checkbox ">
 											<input class="check" id="J_CheckBox_170037950254" name="items[]" value="170037950254" type="checkbox">

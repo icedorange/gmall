@@ -13,15 +13,33 @@
 		<link href="../css/cartstyle.css" rel="stylesheet" type="text/css" />
 
 		<link href="../css/jsstyle.css" rel="stylesheet" type="text/css" />
-
-		<script type="text/javascript" src="../js/address.js"></script>
+		<script src="../AmazeUI-2.4.2/assets/js/jquery.min.js"></script>
 		<script type="text/javascript" src="../js/common.js"></script>
+		<script src="../js/vue.js"></script>
 		<script type="text/javascript" src="../js/loginStatusController.js"></script>
+		<script src="../js/payController.js"></script>		
 		<style type="text/css">
 			[v-cloak] {
 			    display: none;
 			}
-		</style>
+		</style>		
+		<script type="text/javascript">
+		 $(document).ready(function(){
+		     $(function(){
+		         $(".add").click(function(){
+		          var t=$(this).parent().find('input[class*=text_box]');
+		         t.val(parseInt(t.val())+1)
+		        })
+		      $(".min").click(function(){
+		       var t=$(this).parent().find('input[class*=text_box]');
+		         t.val(parseInt(t.val())-1)
+		         if(parseInt(t.val())<0){
+		          t.val(0);
+		          }
+		       })
+		    }) 
+		 });	
+		</script>
 	</head>
 
 	<body>

@@ -9,12 +9,12 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>gmall Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.9.RELEASE</spring.version>
 	</properties>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -159,8 +159,32 @@
 			<version>3.6</version>
 		</dependency>
 	</dependencies>
+	
 	<build>
 		<finalName>gmall</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+				<!-- 是否替换资源中的属性 -->
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+				<excludes>
+					<exclude>envi/*</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -172,4 +196,28 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<!-- 默认激活开发配制，使用config-dev.properties来替换设置过虑的资源文件中的${key} -->
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<filters>
+					<filter>src/main/resources/envi/config-dev.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>product</id>
+			<build>
+				<filters>
+					<filter>src/main/resources/envi/config-product.properties</filter>
+				</filters>
+			</build>
+		</profile>
+	</profiles> 
 </project>
