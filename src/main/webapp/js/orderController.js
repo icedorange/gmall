@@ -2,7 +2,7 @@ $(document).ready(function(){
 	//所有订单
 	$.ajax({
 		type : "POST",
-		url : "http://localhost:80/gmall/order/orderItem.shtml",
+		url : $.gmallHost+"/order/orderItem.shtml",
 		data : {"transactionStatus" : 2000},
 		dataType : "json",
 		success : function(obj) {

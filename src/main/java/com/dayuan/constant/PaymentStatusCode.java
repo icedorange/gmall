@@ -9,7 +9,7 @@ public enum PaymentStatusCode {
 	TRADE_SUCCESS(2003),
 	// 待评价
 	TRADE_FAIL(2004);
-	;
+	
 
 	private int value;
 

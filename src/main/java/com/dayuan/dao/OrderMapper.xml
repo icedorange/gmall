@@ -41,4 +41,10 @@
 		insert into g_order (sum,orders_time,consignee_address,consignee_name,consigee_number,uid)
 		values (#{sum},#{ordersTime},#{consigneeAddress},#{consigneeName},#{consigeeNumber},#{uid})
 	</insert>
+	
+	<update id="updateTransactionStatus">
+		update g_order set
+		transaction_status = #{transactionStatus}
+		where id = #{id}
+	</update>
 </mapper>

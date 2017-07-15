@@ -15,4 +15,6 @@ public interface OrderMapper {
 	Order selectOrderById(Map<String, Object> params);
 	
 	Long insertOrder(Order order);
+	
+	int updateTransactionStatus(Order order);
 }

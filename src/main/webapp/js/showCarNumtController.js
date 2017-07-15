@@ -12,8 +12,8 @@ $(document).ready(function(){
 					{	
 						numberCart = numberCart +obj.data.cartGoodsVo[i].number;
 					 }
-					$("#mc-menu-hd").attr("href","http://localhost:80/gmall/home/shopcart.html");
-					$("#shopCart a").attr("href","http://localhost:80/gmall/home/shopcart.html");
+					$("#mc-menu-hd").attr("href","http://www.gmall.com/gmall/home/shopcart.html");
+					$("#shopCart a").attr("href","http://www.gmall.com/gmall/home/shopcart.html");
 					$("#J_MiniCartNum").text(numberCart);
 					$("#shopCart .cart_num").text(numberCart);		
 				} else {

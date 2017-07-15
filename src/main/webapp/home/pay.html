@@ -17,6 +17,7 @@
 		<script type="text/javascript" src="../js/common.js"></script>
 		<script src="../js/vue.js"></script>
 		<script type="text/javascript" src="../js/loginStatusController.js"></script>
+		<script type="text/javascript" src="../js/showCarNumtController.js"></script> 
 		<script src="../js/payController.js"></script>		
 		<style type="text/css">
 			[v-cloak] {
@@ -38,7 +39,7 @@
 		          }
 		       })
 		    }) 
-		 });	
+		 });	 
 		</script>
 	</head>
 
@@ -195,9 +196,7 @@
 					<div class="logistics">
 						<h3>选择支付方式</h3>
 						<ul class="pay-list">
-							<li class="pay card"><img src="../images/wangyin.jpg" />银联<span></span></li>
-							<li class="pay qq"><img src="../images/weizhifu.jpg" />微信<span></span></li>
-							<li class="pay taobao"><img src="../images/zhifubao.jpg" />支付宝<span></span></li>
+							
 						</ul>
 					</div>
 					<div class="clear"></div>
@@ -241,7 +240,7 @@
 															<img  v-bind:src="'http://localhost:80/gmall/'+todo.picture" class="itempic J_ItemImg"></a>
 													</div>
 													<div class="item-info">
-														<div class="item-basic-info">
+														<div goodsid="1" class="item-basic-info">
 															<a href="#" class="item-title J_MakePoint" data-point="tbcart.8.11">{{todo.product}}</a>
 														</div>
 													</div>
@@ -279,9 +278,9 @@
 											</li>
 											<li class="td td-oplist">
 												<div class="td-inner">
-													<span class="phone-title">配送方式</span>
+													<span class="phone-title"></span>
 													<div class="pay-logis">
-														快递<b class="sys_item_freprice">10</b>元
+														<b class="sys_item_freprice"></b>
 													</div>
 												</div>
 											</li>
@@ -338,7 +337,8 @@
 
 									<div id="holyshit269" class="submitOrder">
 										<div class="go-btn-wrap">
-											<a id="J_Go" href="success.html" class="btn-go" tabindex="0" title="点击此按钮，提交订单">提交订单</a>
+											<a id="J_Go" onclick="submitOrder();" class="btn-go" tabindex="0" title="点击此按钮，提交订单">提交订单</a>
+											
 										</div>
 									</div>
 									<div class="clear"></div>

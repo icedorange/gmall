@@ -127,6 +127,7 @@ public class UserController {
 				resultVo.setMsg("请注册后登录");
 				return resultVo;
 			}
+		
 			// 登录成功，对象放入session
 			session.setAttribute("user", loginUser);
 			resultVo.setCode(ConstantCode.SUCCESS.getCode());

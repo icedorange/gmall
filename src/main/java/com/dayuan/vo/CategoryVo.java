@@ -1,8 +1,13 @@
 package com.dayuan.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CategoryVo {
+public class CategoryVo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 792000752333205311L;
 	private Integer id;
 	private String name;
 	private Integer pid;

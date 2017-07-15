@@ -11,8 +11,8 @@ $(document).ready(function(){
 					"<a href=\"register.html\" target=\"_top\">免费注册</a>");
 					$(".member-login").hide();
 					$(".member-logout").show();
-					$("#mc-menu-hd").attr("href","http://localhost:80/gmall/home/login.html");
-					$("#shopCart a").attr("href","http://localhost:80/gmall/home/login.html");
+					$("#mc-menu-hd").attr("href","http://www.gmall.com/gmall/home/login.html");
+					$("#shopCart a").attr("href","http://www.gmall.com/gmall/home/login.html");
 					return;
 				}		
 				if(obj.data.username !=null){
@@ -20,16 +20,85 @@ $(document).ready(function(){
 					$(".member-logout").hide();
 					$(".member-login").show();
 					$(".s-name").text(obj.data.username);
+					//购物车数量
+					$.ajax({
+						type : "POST",
+						url : $.gmallHost+"/cart/showCart.shtml",
+						async : false,
+						dataType: "json",
+						success : function(obj) {
+								if(obj.code==1){
+									var numberCart = 0;
+									for (var i=0; i<obj.data.cartGoodsVo.length; i++)
+									{	
+										numberCart = numberCart +obj.data.cartGoodsVo[i].number;
+									 }
+									$("#mc-menu-hd").attr("href","http://www.gmall.com/gmall/home/shopcart.html");
+									$("#shopCart a").attr("href","http://www.gmall.com/gmall/home/shopcart.html");
+									$("#J_MiniCartNum").text(numberCart);
+									$("#shopCart .cart_num").text(numberCart);		
+								} else {
+									alert(obj.msg);
+								}
+							}
+						}
+					);
 				}else if(obj.data.mobile !=null){
 					$(".menu-hd:first").html("你好! " + obj.data.mobile +" " + "<a onclick=\"logout();\">退出</a>");
 					$(".member-logout").hide();
 					$(".member-login").show();
 					$(".s-name").text(obj.data.mobile);
+					//购物车数量
+					$.ajax({
+						type : "POST",
+						url : $.gmallHost+"/cart/showCart.shtml",
+						async : false,
+						dataType: "json",
+						success : function(obj) {
+								if(obj.code==1){
+									var numberCart = 0;
+									for (var i=0; i<obj.data.cartGoodsVo.length; i++)
+									{	
+										numberCart = numberCart +obj.data.cartGoodsVo[i].number;
+									 }
+									$("#mc-menu-hd").attr("href","http://www.gmall.com/gmall/home/shopcart.html");
+									$("#shopCart a").attr("href","http://www.gmall.com/gmall/home/shopcart.html");
+									$("#J_MiniCartNum").text(numberCart);
+									$("#shopCart .cart_num").text(numberCart);		
+								} else {
+									alert(obj.msg);
+								}
+							}
+						}
+					);
 				}else if(!obj.data.email!=null){
 					$(".menu-hd:first").html("你好! " + obj.data.email +" " + "<a onclick=\"logout();\">退出</a>");
 					$(".member-logout").hide();
 					$(".member-login").show();
 					$(".s-name").text(obj.data.email);
+					//购物车数量
+					$.ajax({
+						type : "POST",
+						url : $.gmallHost+"/cart/showCart.shtml",
+						async : false,
+						dataType: "json",
+						success : function(obj) {
+								if(obj.code==1){
+									var numberCart = 0;
+									for (var i=0; i<obj.data.cartGoodsVo.length; i++)
+									{	
+										numberCart = numberCart +obj.data.cartGoodsVo[i].number;
+									 }
+									$("#mc-menu-hd").attr("href","http://www.gmall.com/gmall/home/shopcart.html");
+									$("#shopCart a").attr("href","http://www.gmall.com/gmall/home/shopcart.html");
+									$("#J_MiniCartNum").text(numberCart);
+									$("#shopCart .cart_num").text(numberCart);		
+								} else {
+									alert(obj.msg);
+								}
+							}
+						}
+					);
 				}
 			} else {
 				alert(obj.msg);

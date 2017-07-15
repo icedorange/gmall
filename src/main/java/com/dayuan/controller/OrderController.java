@@ -1,6 +1,8 @@
 package com.dayuan.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dayuan.bean.Order;
 import com.dayuan.bean.User;
 import com.dayuan.constant.ConstantCode;
+import com.dayuan.dto.GoodsDTO;
+import com.dayuan.dto.OrderDTO;
 import com.dayuan.exception.ParamException;
 import com.dayuan.exception.StockExctption;
 import com.dayuan.service.OrderService;
@@ -103,23 +107,28 @@ public class OrderController {
 	// 确认订单
 	@RequestMapping(value = "/orderConfirm.shtml", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ResultVo orderConfirm(HttpSession session, HttpServletResponse response, Order order, Long id,
-			Integer number) {
+	public ResultVo orderConfirm(HttpSession session, HttpServletResponse response, OrderDTO orderDTO) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		ResultVo resultVo = null;
 		try {
 			resultVo = new ResultVo();
+			GoodsDTO goodsDTO = new GoodsDTO();
+			goodsDTO.setGoodsid(1);
+			goodsDTO.setNumber(1);
+			List<GoodsDTO> goodsList = new ArrayList<>();
+			goodsList.add(goodsDTO);
+			orderDTO.setGoodsList(goodsList);
 			//收货人地址详情，商品详情，
 			// 判断参数
-			if (id == null || number == null || order == null) {
+			/*if (orderDTO == null) {
 				throw new ParamException(ConstantCode.PARAM_EMPTY);
-			}
+			}*/
 			// 从session中获取用户，
 			User user = (User) session.getAttribute("user");
 			// 返回订单号
-			orderService.orderConfirm(id, number, order, user.getId());
+			Map<String, Object> porder = orderService.orderConfirm(orderDTO, user.getId());
 			resultVo.setCode(ConstantCode.SUCCESS.getCode());
-			resultVo.setData(order);
+			resultVo.setData(porder);
 			return resultVo;
 		} catch (ParamException pe) {
 			resultVo.setCode(ConstantCode.PARAM_EMPTY.getCode());
@@ -138,4 +147,6 @@ public class OrderController {
 			return resultVo;
 		}
 	}
+	
+	
 }

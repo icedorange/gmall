@@ -28,7 +28,7 @@
 			</if>
 		</where>
 	</select>
-
+		
 	<update id="updateConsignee">
 		update g_consignee
 		 <trim prefix="set" suffixOverrides=",">
